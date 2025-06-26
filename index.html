@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema CRUD - Gestión Completa</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de Gestión CRUD</h1>
+            <p>Administra Usuarios, Espacios y Reservaciones</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showModule('users')">Usuarios</button>
+            <button class="nav-tab" onclick="showModule('spaces')">Espacios</button>
+            <button class="nav-tab" onclick="showModule('reservations')">Reservaciones</button>
+        </div>
+
+        <div class="content">
+            <div id="message-container"></div>
+
+            <!-- Módulo de Usuarios -->
+            <div id="users" class="module active">
+                <div class="form-section">
+                    <h3>Gestión de Usuarios</h3>
+                    <form id="userForm">
+                        <input type="hidden" id="userId" name="id">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="userName">Nombre:</label>
+                                <input type="text" id="userName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail">Email:</label>
+                                <input type="email" id="userEmail" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="userPhone">Teléfono:</label>
+                                <input type="tel" id="userPhone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="userRole">Rol:</label>
+                                <select id="userRole" name="role" required>
+                                    <option value="">Seleccionar rol</option>
+                                    <option value="admin">Administrador</option>
+                                    <option value="user">Usuario</option>
+                                    <option value="manager">Manager</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success" id="userSubmitBtn">Crear Usuario</button>
+                        <button type="button" class="btn btn-primary" onclick="resetUserForm()">Limpiar</button>
+                        <button type="button" class="btn btn-primary" onclick="loadUsers()">Actualizar Lista</button>
+                    </form>
+                </div>
+
+                <div class="data-section">
+                    <h3>Lista de Usuarios</h3>
+                    <div id="usersList" class="data-list"></div>
+                </div>
+            </div>
+
+            <!-- Módulo de Espacios -->
+            <div id="spaces" class="module">
+                <div class="form-section">
+                    <h3>Gestión de Espacios</h3>
+                    <form id="spaceForm">
+                        <input type="hidden" id="spaceId" name="id">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spaceName">Nombre del Espacio:</label>
+                                <input type="text" id="spaceName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="spaceCapacity">Capacidad:</label>
+                                <input type="number" id="spaceCapacity" name="capacity" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="spaceType">Tipo:</label>
+                                <select id="spaceType" name="type" required>
+                                    <option value="">Seleccionar tipo</option>
+                                    <option value="meeting_room">Sala de Reuniones</option>
+                                    <option value="conference_room">Sala de Conferencias</option>
+                                    <option value="office">Oficina</option>
+                                    <option value="workspace">Espacio de Trabajo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="spaceLocation">Ubicación:</label>
+                                <input type="text" id="spaceLocation" name="location" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="spaceDescription">Descripción:</label>
+                            <textarea id="spaceDescription" name="description" placeholder="Describe las características del espacio..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success" id="spaceSubmitBtn">Crear Espacio</button>
+                        <button type="button" class="btn btn-primary" onclick="resetSpaceForm()">Limpiar</button>
+                        <button type="button" class="btn btn-primary" onclick="loadSpaces()">Actualizar Lista</button>
+                    </form>
+                </div>
+
+                <div class="data-section">
+                    <h3>Lista de Espacios</h3>
+                    <div id="spacesList" class="data-list"></div>
+                </div>
+            </div>
+
+            <!-- Módulo de Reservaciones -->
+            <div id="reservations" class="module">
+                <div class="form-section">
+                    <h3>Gestión de Reservaciones</h3>
+                    <form id="reservationForm">
+                        <input type="hidden" id="reservationId" name="id">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reservationUserId">Usuario:</label>
+                                <select id="reservationUserId" name="userId" required>
+                                    <option value="">Seleccionar usuario</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reservationSpaceId">Espacio:</label>
+                                <select id="reservationSpaceId" name="spaceId" required>
+                                    <option value="">Seleccionar espacio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reservationDate">Fecha:</label>
+                                <input type="date" id="reservationDate" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reservationTime">Hora de Inicio:</label>
+                                <input type="time" id="reservationTime" name="startTime" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reservationEndTime">Hora de Fin:</label>
+                                <input type="time" id="reservationEndTime" name="endTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reservationStatus">Estado:</label>
+                                <select id="reservationStatus" name="status" required>
+                                    <option value="">Seleccionar estado</option>
+                                    <option value="pending">Pendiente</option>
+                                    <option value="confirmed">Confirmada</option>
+                                    <option value="cancelled">Cancelada</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="reservationPurpose">Propósito:</label>
+                            <textarea id="reservationPurpose" name="purpose" placeholder="Describe el propósito de la reservación..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success" id="reservationSubmitBtn">Crear Reservación</button>
+                        <button type="button" class="btn btn-primary" onclick="resetReservationForm()">Limpiar</button>
+                        <button type="button" class="btn btn-primary" onclick="loadReservations()">Actualizar Lista</button>
+                    </form>
+                </div>
+
+                <div class="data-section">
+                    <h3>Lista de Reservaciones</h3>
+                    <div id="reservationsList" class="data-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
